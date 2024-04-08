@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Tabla from './Tabla';
-import Search from './Search';
+import Tabla from './components/Tabla';
+import Search from './components/Search';
 
 function App() {
   const [datosFiltrados, setDatosFiltrados] = useState([]);
