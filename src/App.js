@@ -1,9 +1,13 @@
-import Select from './components/Select'; 
-import React, { useState, useEffect } from 'react';
+
+import Tabla from './components/Tabla';
+import Search from './components/Search';
+import React, { useState } from 'react';
 
 function App() {
-  const [filasPorPagina, setFilasPorPagina] = useState(5);
-  const [datos] = useState([
+  const [datosFiltrados, setDatosFiltrados] = useState([]);
+  const [busqueda, setBusqueda] = useState('');
+
+  const datos = [
     { nombre: 'Paola Garcia', descripcion: 'aprendiz' },
     { nombre: 'Daniel aztaiza', descripcion: 'aprendiz' },
     { nombre: 'Laura Bastidas', descripcion: 'aprendiz' },
@@ -19,12 +23,14 @@ function App() {
     { nombre: 'Ana Lopez', descripcion: 'instructor' },
     { nombre: 'Danial Muñoz', descripcion: 'aprendiz' },
     { nombre: 'Diana Leon', descripcion: 'aprendiz' },
+    { nombre: 'isabel Gutierrez', descripcion: 'aprendiz' },
     { nombre: 'Sara hoyos', descripcion: 'aprendiz' },
     { nombre: 'Isabel Bastidas', descripcion: 'aprendiz' },
     { nombre: 'Felipe noguera', descripcion: 'aprendiz' },
     { nombre: 'Juan Pabon', descripcion: 'aprendiz' },
     { nombre: 'Andres Rivera', descripcion: 'aprendiz' },
-  ]);
+  ];
+
   useEffect(() => {
     setTotalElementos(datos.length);
   }, [datos.length]);
@@ -35,11 +41,22 @@ function App() {
     setPaginaActual(1);};
 
 
+  const handleBusqueda = (valorBusqueda) => {
+    setBusqueda(valorBusqueda);
+
+    const datosFiltrados = datos.filter((dato) =>
+      dato.nombre.toLowerCase().startsWith(valorBusqueda.toLowerCase())
+    );
+    setDatosFiltrados(datosFiltrados);
+  };
+
   return (
     <div className="App">
       <h1>Lista de Datos</h1>
       <Select onChange={handleFilasPorPaginaChange} />
-      </div>
+      <Search onSearch={handleBusqueda} />
+      <Tabla datos={busqueda ? datosFiltrados : datos} />
+    </div>
   );
 }
 
