@@ -8,6 +8,7 @@ const Tabla = ({ datos }) => {
         <tr>
           <th>Nombre</th>
           <th>Descripción</th>
+          <th>Accion</th>
         </tr>
       </thead>
       <tbody>
@@ -15,6 +16,8 @@ const Tabla = ({ datos }) => {
           <tr key={index}>
             <td>{item.nombre}</td>
             <td>{item.descripcion}</td>
+            <td>{item.eliminar}</td>
+            
           </tr>
         ))}
       </tbody>

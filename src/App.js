@@ -1,7 +1,8 @@
+import React, { useState, useEffect } from 'react';
+import Select from './components/Select';
 import Tabla from './components/Tabla';
 import Search from './components/Search';
-import Select from './components/Select'
-import React, { useState, useEffect } from 'react';
+import AgregarDatos from './components/AgregarDatos'; // Importamos el componente AgregarDatos
 
 function App() {
   const [datosFiltrados, setDatosFiltrados] = useState([]);
@@ -9,9 +10,9 @@ function App() {
   const [filasPorPagina, setFilasPorPagina] = useState(5);
   const [totalElementos, setTotalElementos] = useState(0);
   const [paginaActual, setPaginaActual] = useState(1);
+  const [mostrarAgregar, setMostrarAgregar] = useState(false); // Nuevo: Estado para controlar la visibilidad del formulario de agregar
+  const [datos, setDatos] = useState([
 
-
-  const datos = [
     { nombre: 'Paola Garcia', descripcion: 'aprendiz' },
     { nombre: 'Daniel aztaiza', descripcion: 'aprendiz' },
     { nombre: 'Laura Bastidas', descripcion: 'aprendiz' },
@@ -33,17 +34,16 @@ function App() {
     { nombre: 'Felipe noguera', descripcion: 'aprendiz' },
     { nombre: 'Juan Pabon', descripcion: 'aprendiz' },
     { nombre: 'Andres Rivera', descripcion: 'aprendiz' },
-  ];
+  ]);
 
   useEffect(() => {
     setTotalElementos(datos.length);
   }, [datos.length]);
 
-
   const handleFilasPorPaginaChange = (valor) => {
     setFilasPorPagina(valor);
-    setPaginaActual(1);};
-
+    setPaginaActual(1);
+  };
 
   const handleBusqueda = (valorBusqueda) => {
     setBusqueda(valorBusqueda);
@@ -54,17 +54,48 @@ function App() {
     setDatosFiltrados(datosFiltrados);
   };
 
+  const handleMostrarAgregar = () => {
+    setMostrarAgregar(true); // Mostrar el formulario de agregar
+  };
+
+  const handleCancelarAgregar = () => {
+    setMostrarAgregar(false); // Ocultar el formulario de agregar
+  };
+
+  const handleAceptarAgregar = (nuevoDato) => {
+    setDatos([...datos, nuevoDato]); // Agregar el nuevo dato a la lista
+    handleCancelarAgregar(); // Ocultar el formulario de agregar
+  };
+
+
+  
+
   return (
     <div className="App">
       <h1>Lista de Datos</h1>
-      <Select onChange={handleFilasPorPaginaChange} />
+      <Select onChange={handleFilasPorPaginaChange} /> 
+      <button onClick={handleMostrarAgregar}>Agregar Nuevo</button> {/* Nuevo: Botón para mostrar el formulario de agregar */}
+      {mostrarAgregar && (
+        <AgregarDatos onAgregar={handleAceptarAgregar} />) /* Nuevo: Agregar el componente AgregarDatos */
+      }
+      
       <Search onSearch={handleBusqueda} />
       <Tabla
-      datos={busqueda ? datosFiltrados.slice((paginaActual - 1) * filasPorPagina, paginaActual * filasPorPagina) : datos.slice((paginaActual - 1) * filasPorPagina, paginaActual * filasPorPagina)}
-      paginaActual={paginaActual}
-      totalElementos={totalElementos}
-      filasPorPagina={filasPorPagina}
-    />
+        datos={
+          busqueda
+            ? datosFiltrados.slice(
+                (paginaActual - 1) * filasPorPagina,
+                paginaActual * filasPorPagina
+              )
+            : datos.slice(
+                (paginaActual - 1) * filasPorPagina,
+                paginaActual * filasPorPagina
+              )
+        }
+        paginaActual={paginaActual}
+        totalElementos={totalElementos}
+        filasPorPagina={filasPorPagina}
+      />
     </div>
   );
 }

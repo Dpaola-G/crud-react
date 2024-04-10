@@ -8,7 +8,7 @@ const Search = ({ onSearch }) => {
   return (
     <input
       type="text"
-      placeholder="Buscar..."
+      placeholder="Buscar por Nombre..."
       onChange={handleSearch}
     />
   );
